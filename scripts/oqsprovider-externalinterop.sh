@@ -29,21 +29,18 @@ fi
 # Ascertain algorithms are available:
 
 # skipping these tests for now as per https://mailarchive.ietf.org/arch/msg/tls/hli5ogDbUudAA4tZXskVbOqeor4
-# TBD replace with suitable ML-KEM hybrid tests as and when available XXX 
-
-exit 0
+# TBD replace with suitable ML-KEM hybrid tests as and when available XXX
 
 echo " Cloudflare:"
 
 if ! ($OPENSSL_APP list -kem-algorithms | grep x25519_kyber768); then
    echo "Skipping unconfigured x25519_kyber768 interop test"
 else
-   export OQS_CODEPOINT_X25519_KYBER512=65072
    (echo -e "GET /cdn-cgi/trace HTTP/1.1\nHost: cloudflare.com\n\n"; sleep 1; echo $'\cc') | "${OPENSSL_APP}" s_client ${USE_PROXY} -connect pq.cloudflareresearch.com:443 -groups x25519_kyber768 -servername cloudflare.com -ign_eof 2>/dev/null | grep kex=X25519Kyber768Draft00
 fi
 
-if ! ($OPENSSL_APP list -kem-algorithms | grep x25519_kyber512); then
-   echo "Skipping unconfigured x25519_kyber512 interop test"
-else
-   (echo -e "GET /cdn-cgi/trace HTTP/1.1\nHost: cloudflare.com\n\n"; sleep 1; echo $'\cc') | "${OPENSSL_APP}" s_client ${USE_PROXY} -connect pq.cloudflareresearch.com:443 -groups x25519_kyber512 -servername cloudflare.com -ign_eof 2>/dev/null | grep kex=X25519Kyber512Draft00
-fi
+#if ! ($OPENSSL_APP list -kem-algorithms | grep x25519_kyber512); then
+#   echo "Skipping unconfigured x25519_kyber512 interop test"
+#else
+#   (echo -e "GET /cdn-cgi/trace HTTP/1.1\nHost: cloudflare.com\n\n"; sleep 1; echo $'\cc') | "${OPENSSL_APP}" s_client ${USE_PROXY} -connect pq.cloudflareresearch.com:443 -groups x25519_kyber512 -servername cloudflare.com -ign_eof 2>/dev/null | grep kex=X25519Kyber512Draft00
+#fi

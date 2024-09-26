@@ -38,7 +38,7 @@ NULL, "{{ kem['name_group'] }}",
 {%- if hybrid['hybrid_oid'] == "NULL" -%}
 NULL, "{{hybrid['hybrid_group']}}_{{ kem['name_group'] }}",
 {%- else -%}
-"{{hybrid['hybrid_oid']}}", "{{hybrid['hybrid_group']}}_{{ kem['name_group'] }}",
+"{{hybrid['hybrid_oid']}}", "{% if 'standard_name' in hybrid %}{{hybrid['standard_name']}}{% else %}{{ hybrid['hybrid_group'] }}_{{ kem['name_group'] }}{% endif %}",
 {%- endif -%}
 {%- endfor -%}
 {%- endfor %}
